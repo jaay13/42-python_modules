@@ -1,6 +1,4 @@
-
-
-def main():
+def main() -> None:
     name = "Pink Tulip"
     height = 12.5
     age = 40
