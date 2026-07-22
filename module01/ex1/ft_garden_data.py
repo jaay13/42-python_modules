@@ -1,11 +1,12 @@
 class Plant:
     def __init__(self, name: str, height: float, age: int) -> None:
         self.name = name
-        self.hght = height
+        self.height = height
         self.age = age
 
     def show(self) -> None:
-        print(f"{self.name.capitalize()}: {self.hght}cm, {self.age} days old")
+        print(f"{self.name.capitalize()}: ", end="")
+        print(f"{self.height}cm, {self.age} days old")
 
 
 def main() -> None:
