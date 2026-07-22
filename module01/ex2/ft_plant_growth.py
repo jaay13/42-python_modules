@@ -25,7 +25,7 @@ class Plant:
 
 
 def main() -> None:
-    rose = Plant("rose", 25.0, 30, 0.8)
+    rose = Plant("dahlia", 12.0, 10, 0.6)
     print("=== Garden Plant Growth ===")
     for x in range(1, 9):
         rose.show()
