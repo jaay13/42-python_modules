@@ -10,7 +10,6 @@ class Plant:
         self._hght = height if height >= 0 else 0.0
         self._agey = age if age >= 0 else 0
         self.growth_rate = growth
-        self.week_growth = 0.0
 
     def show(self) -> None:
         print(f"{self.name.capitalize()}: ", end="")
@@ -18,7 +17,6 @@ class Plant:
 
     def grow(self) -> None:
         self._hght += self.growth_rate
-        self.week_growth += self.growth_rate
 
     def age(self) -> None:
         self._agey += 1
