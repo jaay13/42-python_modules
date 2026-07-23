@@ -3,23 +3,24 @@ def input_temperature(temp_str: str) -> int:
 
 
 def test_temperature() -> None:
+
+    print("\nInput data is '25'")
     try:
-        print("\nInput data is '25'")
         input_temperature("25")
     except ValueError as e:
         print(f"Caught input_temperature error: {e}")
     else:
         print("Temperature is now 25°C")
 
+    print("\nInput data is 'abc'")
     try:
-        print("\nInput data is 'abc'")
         input_temperature("abc")
     except ValueError as e:
         print(f"Caught input_temperature error: {e}")
     else:
         print("Temperature is now 25°C")
-    finally:
-        print("\nAll tests completed - program didn't crash!")
+    
+    print("\nAll tests completed - program didn't crash!")
 
 
 def main() -> None:
