@@ -25,15 +25,15 @@ class Plant:
 
 
 def main() -> None:
-    rose = Plant("dahlia", 12.0, 10, 0.6)
+    plant = Plant("dahlia", 12.0, 10, 0.6)
     print("=== Garden Plant Growth ===")
     for x in range(1, 9):
-        rose.show()
+        plant.show()
         if x != 8:
             print(f"=== Day {x} ===")
-            rose.grow()
-            rose.age()
-    print(f"Growth this week: {round(rose.week_growth, 1)}cm")
+            plant.grow()
+            plant.age()
+    print(f"Growth this week: {round(plant.week_growth, 1)}cm")
 
 
 if __name__ == "__main__":

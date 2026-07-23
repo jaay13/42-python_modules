@@ -45,23 +45,23 @@ class Plant:
 
 
 def main() -> None:
-    rose = Plant("dandelion", 11.0, 14, 0.9)
+    plant = Plant("dandelion", 11.0, 14, 0.9)
 
     print("=== Garden Security System ===")
     print("Plant created: ", end="")
-    rose.show()
+    plant.show()
 
     print()
-    rose.set_height(22)
-    rose.set_age(28)
+    plant.set_height(22)
+    plant.set_age(28)
 
     print()
-    rose.set_height(-22)
-    rose.set_age(-28)
+    plant.set_height(-22)
+    plant.set_age(-28)
 
     print()
     print("Current state: ", end="")
-    rose.show()
+    plant.show()
 
 
 if __name__ == "__main__":
