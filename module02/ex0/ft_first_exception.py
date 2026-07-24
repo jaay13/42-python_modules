@@ -19,7 +19,7 @@ def test_temperature() -> None:
         print(f"Caught input_temperature error: {e}")
     else:
         print("Temperature is now 25°C")
-    
+
     print("\nAll tests completed - program didn't crash!")
 
 
