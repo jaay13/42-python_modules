@@ -17,46 +17,56 @@ class PlantError(GardenError):
         super().__init__(error_message)
 
 
-class WaterError(GardenError):
-    """Raised when an issue occurs with watering."""
-
-    def __init__(
-            self, error_message: str = "Not enough water in the tank!"
-    ) -> None:
-        super().__init__(error_message)
-
-
 def water_plant(plant_name: str) -> None:
-    """ """
-    try:
-        if plant_name == plant_name.capitalize():
-            print("[OK]")
+    """Water plant_name if capitalized, else raise PlantError."""
 
-        else:
-            raise PlantError(f"Invalid plant name to water: '{plant_name}'")
-    except PlantError as e:
-        print(f"Caught PlantError: {e}")
+    if plant_name == plant_name.capitalize():
+        print(f"Watering {plant_name}: [OK]")
+
+    else:
+        raise PlantError(f"Invalid plant name to water: '{plant_name}'")
 
 
 def test_watering_system() -> None:
-    """ """
-    print("Opening watering system")
+    """Run valid then invalid watering cycles, always closing via finally."""
+
+    print("\nTesting valid plants...")
+
     try:
+        print("Opening watering system")
         water_plant("Dahlia")
+        water_plant("Sweet potatos")
+        water_plant("Sugercane")
+
     except PlantError as e:
-        print(
-            f"Caught PlantError: {e}"
-            f".. ending tests and returning to main"
-        )
+        print(f"Caught PlantError: {e}")
+        print(".. ending tests and returning to main")
+        return
+
     finally:
         print("Closing watering system")
+
+    print("\nTesting invalid plants...")
+
+    try:
+        print("Opening watering system")
+        water_plant("Tomato")
+        water_plant("lettuce")
+
+    except PlantError as e:
+        print(f"Caught PlantError: {e}")
+        print(".. ending tests and returning to main")
+        return
+
+    finally:
+        print("Closing watering system")
+        print("\nCleanup always happens, even with errors!")
 
 
 def main() -> None:
     print("=== Garden Watering System ===")
-
-    print("\nTesting valid plants...")
     test_watering_system()
+
 
 if __name__ == "__main__":
     main()
