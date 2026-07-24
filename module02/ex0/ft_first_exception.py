@@ -1,8 +1,10 @@
 def input_temperature(temp_str: str) -> int:
+    """Convert a temperature string to int."""
     return int(temp_str)
 
 
 def test_temperature() -> None:
+    """Test input_temperature with valid and invalid values."""
 
     print("\nInput data is '25'")
     try:
