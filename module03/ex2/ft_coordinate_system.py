@@ -13,29 +13,34 @@ def get_player_pos() -> tuple[float, float, float]:
         tuple: The (x, y, z) coordinates as floats.
     """
 
+    # Loop until a valid triplet is entered, re-prompting on every error
     while True:
         coords_input = input(
             "Enter new coordinates as floats in format 'x,y,z': "
         )
         coords = coords_input.split(",")
+
+        # Reject anything that is not exactly three comma-separated values
         if len(coords) != 3:
             print("Invalid Syntax")
             continue
+
+        # Convert each axis separately so the faulty one can be named
         x_str, y_str, z_str = coords
         try:
             x = float(x_str)
         except ValueError as e:
-            print(f"Error on parameter '{x}': {e}")
+            print(f"Error on parameter '{x_str}': {e}")
             continue
         try:
             y = float(y_str)
         except ValueError as e:
-            print(f"Error on parameter '{y}': {e}")
+            print(f"Error on parameter '{y_str}': {e}")
             continue
         try:
             z = float(z_str)
         except ValueError as e:
-            print(f"Error on parameter '{z}': {e}")
+            print(f"Error on parameter '{z_str}': {e}")
             continue
         break
     return x, y, z
@@ -44,10 +49,13 @@ def get_player_pos() -> tuple[float, float, float]:
 def main() -> None:
     print("=== Game Coordinate System ===")
 
+    # A tuple prints as a whole, and is also indexable element by element
     print("\nGet a first set of coordinates")
     coords_1 = get_player_pos()
     print(f"Got a first tuple: {coords_1}")
     print(f"It includes: X={coords_1[0]}, Y={coords_1[1]}, Z={coords_1[2]}")
+
+    # 3D extension of pythagorean theorem: distance to the origin (0, 0, 0)
     distance_center = math.sqrt(
         coords_1[0] ** 2
         + coords_1[1] ** 2
@@ -57,6 +65,8 @@ def main() -> None:
 
     print("\nGet a second set of coordinates")
     coords_2 = get_player_pos()
+
+    # distance between the two points
     distance_coords = math.sqrt(
         (coords_1[0] - coords_2[0]) ** 2
         + (coords_1[1] - coords_2[1]) ** 2

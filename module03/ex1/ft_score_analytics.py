@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 
 
@@ -7,6 +6,7 @@ def ft_score_analytics() -> None:
 
     print("=== Player Score Analytics ===")
 
+    # Keep only the arguments that convert to int, reporting the others
     score_list = []
     for arg in sys.argv[1:]:
         try:
@@ -14,10 +14,12 @@ def ft_score_analytics() -> None:
         except ValueError:
             print(f"Invalid parameter: '{arg}'")
 
+    # Stats need at least two scores to be meaningful
     players = len(score_list)
     if players == 1:
         print("Sorry mate but you'll have to provide more than one score :(")
     elif players > 1:
+        # Range is the spread between the best and the worst score
         score_total = sum(score_list)
         score_average = score_total / players
         score_max = max(score_list)
@@ -25,7 +27,7 @@ def ft_score_analytics() -> None:
         score_range = score_max - score_min
         print(f"Scores processed: {score_list}")
         print(f"Total players: {players}")
-        print(f"Total Score: {score_total}")
+        print(f"Total score: {score_total}")
         print(f"Average score: {score_average}")
         print(f"High score: {score_max}")
         print(f"Low score: {score_min}")

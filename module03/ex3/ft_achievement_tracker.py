@@ -18,8 +18,12 @@ ACHIEVEMENTS = [
 def gen_player_achievements() -> set[str]:
     """Return a set of randomly chosen achievements for one player."""
 
+    # Get a random number k
     k = random.randint(4, 10)
+
+    # Get random sample k of achievements from ACHIEVEMENTS list
     achievements_sample = set(random.sample(ACHIEVEMENTS, k))
+
     return achievements_sample
 
 
