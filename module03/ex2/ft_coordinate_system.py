@@ -1,7 +1,7 @@
 import math
 
 
-def get_player_pos() -> tuple:
+def get_player_pos() -> tuple[float, float, float]:
     """Prompt the user for 3D coordinates until valid input is given.
 
     Repeatedly asks for coordinates in the format 'x,y,z', validating
@@ -14,24 +14,26 @@ def get_player_pos() -> tuple:
     """
 
     while True:
-        coords = input("Enter new coordinates as floats in format 'x,y,z': ")
-        coords = coords.split(",")
+        coords_input = input(
+            "Enter new coordinates as floats in format 'x,y,z': "
+        )
+        coords = coords_input.split(",")
         if len(coords) != 3:
             print("Invalid Syntax")
             continue
-        x, y, z = coords
+        x_str, y_str, z_str = coords
         try:
-            x = float(x)
+            x = float(x_str)
         except ValueError as e:
             print(f"Error on parameter '{x}': {e}")
             continue
         try:
-            y = float(y)
+            y = float(y_str)
         except ValueError as e:
             print(f"Error on parameter '{y}': {e}")
             continue
         try:
-            z = float(z)
+            z = float(z_str)
         except ValueError as e:
             print(f"Error on parameter '{z}': {e}")
             continue
