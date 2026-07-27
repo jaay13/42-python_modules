@@ -26,7 +26,7 @@ def gen_player_achievements() -> set[str]:
 def main() -> None:
     print("=== Achievement Tracker System ===\n")
 
-    PLAYERS = ["Jason", "Van", "Alice", "Dylan"]
+    PLAYERS = ["Jason", "Van", "Benjx", "Dylan", "Alice"]
     players = {name: gen_player_achievements() for name in PLAYERS}
 
     # Printing each Player with their Achievements
