@@ -60,7 +60,8 @@ def main() -> None:
             f"{total}"
         )
 
-        # Iterating a dict yields its keys, so the value is looked up by name(item)
+        # Iterating a dict yields its keys, so the value is
+        # looked up by name(item)
         for item in inventory:
             quantity = inventory[item]
             percent = quantity / total * 100
