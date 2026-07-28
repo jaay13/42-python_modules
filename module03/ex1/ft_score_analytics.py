@@ -35,7 +35,7 @@ def ft_score_analytics() -> None:
     else:
         print(
             "No scores provided. Usage: python3 ft_score_analytics.py "
-            "<score1> <score1> ..."
+            "<score1> <score2> ..."
         )
 
 
