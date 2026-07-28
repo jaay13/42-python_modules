@@ -20,13 +20,14 @@ def get_player_pos() -> tuple[float, float, float]:
         )
         coords = coords_input.split(",")
 
-        # Reject anything that is not exactly three comma-separated values
-        if len(coords) != 3:
-            print("Invalid Syntax")
+        # Unpacking raises ValueError itself when the count isn't exactly 3
+        try:
+            x_str, y_str, z_str = coords
+        except ValueError:
+            print("Invalid syntax")
             continue
 
         # Convert each axis separately so the faulty one can be named
-        x_str, y_str, z_str = coords
         try:
             x = float(x_str)
         except ValueError as e:
