@@ -13,12 +13,15 @@ def print_argv() -> None:
     # argv[0] is always the script itself, so it is reported separately
     print(f"Program name: {sys.argv[0]}")
 
-    # Start at index 1 to skip the program name
-    if n > 1:
-        for i in range(1, n):
-            print(f"Argument {i}: {sys.argv[i]}")
-    else:
+    # sys.argv always holds at least the program name, so n == 1 means
+    # no arguments were passed
+    if n == 1:
         print("No arguments provided!")
+    else:
+        i = 1
+        for arg in sys.argv[1:]:
+            print(f"Argument {i}: {arg}")
+            i += 1
 
     # Total counts argv[0] as well, hence n and not n - 1
     print(f"Total arguments: {n}")
