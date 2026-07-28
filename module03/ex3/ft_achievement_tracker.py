@@ -31,31 +31,36 @@ def main() -> None:
     print("=== Achievement Tracker System ===\n")
 
     PLAYERS = ["Jason", "Van", "Benjx", "Dylan", "Alice"]
-    players = {name: gen_player_achievements() for name in PLAYERS}
+    players = []
+    for name in PLAYERS:
+        players.append((name, gen_player_achievements()))
 
     # Printing each Player with their Achievements
-    for name, achievements in players.items():
+    for name, achievements in players:
         print(f"Player {name}: {achievements}")
 
     # List of all distinct Achievements from all Players
-    achievements_distinct = set().union(*players.values())
+    all_sets = []
+    for _, achievements in players:
+        all_sets.append(achievements)
+    achievements_distinct = set().union(*all_sets)
     print(f"\nAll distinct achievements: {achievements_distinct}")
 
     # Common Achievements of all Players
-    achievements_common = achievements_distinct.intersection(*players.values())
+    achievements_common = achievements_distinct.intersection(*all_sets)
     print(f"\nCommon achievements: {achievements_common}\n")
 
     # Exclusive Achievements per Player
-    for name, achievements in players.items():
+    for name, achievements in players:
         others: set[str] = set()
-        for other, s in players.items():
-            if other != name:
-                others = others.union(s)
+        for other_name, other_set in players:
+            if other_name != name:
+                others = others.union(other_set)
         exclusive = achievements.difference(others)
         print(f"Only {name} has: {exclusive}")
 
     # Missing Achievements against Master List of Achievements per Player
-    for name, achievements in players.items():
+    for name, achievements in players:
         missing = set(ACHIEVEMENTS).difference(achievements)
         print(f"\n{name} is missing: {missing}")
 
