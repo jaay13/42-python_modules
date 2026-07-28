@@ -18,6 +18,7 @@ def print_argv() -> None:
     if n == 1:
         print("No arguments provided!")
     else:
+        print(f"Arguments received: {n - 1}")
         i = 1
         for arg in sys.argv[1:]:
             print(f"Argument {i}: {arg}")
