@@ -21,9 +21,12 @@ def main() -> None:
         print(f"Error opening file {fd}: {e}")
     else:
         content = file.read()
+
         print("---\n\n")
         print(content)
         print("\n\n---")
+
+        file.close()
         print(f"File '{fd}' closed.")
 
 
