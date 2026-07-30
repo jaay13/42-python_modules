@@ -22,9 +22,9 @@ def main() -> None:
     else:
         content = file.read()
 
-        print("---\n\n")
+        print("---\n")
         print(content)
-        print("\n\n---")
+        print("\n---")
 
         file.close()
         print(f"File '{fd}' closed.")
