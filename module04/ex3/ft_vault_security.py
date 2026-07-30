@@ -1,6 +1,6 @@
 def secure_archive(
-        file_name: str, 
-        action: str = "read", 
+        file_name: str,
+        action: str = "read",
         content: str = ""
 ) -> tuple[bool, str]:
     """Read or write a file, closed automatically by the with block.
