@@ -18,7 +18,7 @@ def main() -> None:
     try:
         file = open(fd)
     except (FileNotFoundError, PermissionError) as e:
-        print(f"Error opening file {fd}: {e}")
+        print(f"Error opening file '{fd}': {e}")
     else:
         content = file.read()
 

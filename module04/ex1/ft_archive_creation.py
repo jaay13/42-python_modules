@@ -18,7 +18,7 @@ def main() -> None:
     try:
         file = open(fd)
     except (FileNotFoundError, PermissionError) as e:
-        print(f"Error opening file {fd}: {e}")
+        print(f"Error opening file '{fd}': {e}")
     else:
         # Whole file put into one string, so the handle can be
         # released before any transforming happens
@@ -54,7 +54,7 @@ def main() -> None:
         try:
             file = open(file_name, "w")
         except (FileNotFoundError, PermissionError) as e:
-            print(f"Error opening file {file_name}: {e}")
+            print(f"Error opening file '{file_name}': {e}")
         else:
             # write() takes one str and adds no newline of its own;
             # the "\n" characters are already inside content
