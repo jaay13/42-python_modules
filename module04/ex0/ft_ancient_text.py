@@ -4,7 +4,7 @@ from sys import argv
 def main() -> None:
     # No arg entered
     if len(argv) == 1:
-        print("usage: ft_anchient_text.py <file>")
+        print("usage: ft_ancient_text.py <file>")
         return
 
     # Argument(filepath) stored as fd
