@@ -21,14 +21,17 @@ def main() -> None:
         print(f"Error opening file '{fd}': {e}")
     else:
         # Whole file put into one string, so the handle can be
-        # released before any transforming happens
-        content = file.read()
+        # released before any transforming happens. finally runs even
+        # if read() raises, so the handle is never left open
+        try:
+            content = file.read()
+        finally:
+            file.close()
 
         print("---\n")
         print(content)
         print("---")
 
-        file.close()
         print(f"File '{fd}' closed.")
 
         # Every newline becomes "#\n", which appends the archive
@@ -56,12 +59,17 @@ def main() -> None:
         except (FileNotFoundError, PermissionError) as e:
             print(f"Error opening file '{file_name}': {e}")
         else:
-            # write() takes one str and adds no newline of its own;
-            # the "\n" characters are already inside content
             print(f"Saving data to '{file_name}'")
-            file.write(content)
+
+            # write() takes one str and adds no newline of its own;
+            # the "\n" characters are already inside content. close()
+            # is in finally, so a failed write still frees the handle
+            try:
+                file.write(content)
+            finally:
+                file.close()
+
             print(f"Data saved in file '{file_name}'.")
-            file.close()
 
 
 if __name__ == "__main__":
