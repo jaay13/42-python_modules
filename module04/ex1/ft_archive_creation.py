@@ -39,23 +39,29 @@ def main() -> None:
         print(content)
         print("---")
 
-        # Empty input means the user declined to save
+        # Empty input means the user declined to save, and a closed
+        # stdin (EOFError, e.g. Ctrl+D) is treated the same way
         try:
             file_name = input("Enter new file name (or empty): ")
-            if len(file_name) == 0:
-                print("Not saving data.")
-                return
-            # Mode "w" creates the file, or truncates an existing one
-            file = open(file_name, "w")
+        except EOFError:
+            print("Not saving data.")
+            return
+        if len(file_name) == 0:
+            print("Not saving data.")
+            return
 
+        # Mode "w" creates the file, or truncates an existing one
+        try:
+            file = open(file_name, "w")
         except (FileNotFoundError, PermissionError) as e:
-            print(f"Error opening file {fd}: {e}")
+            print(f"Error opening file {file_name}: {e}")
         else:
             # write() takes one str and adds no newline of its own;
             # the "\n" characters are already inside content
             print(f"Saving data to '{file_name}'")
             file.write(content)
             print(f"Data saved in file '{file_name}'.")
+            file.close()
 
 
 if __name__ == "__main__":
