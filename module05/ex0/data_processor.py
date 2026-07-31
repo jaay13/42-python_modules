@@ -89,25 +89,25 @@ class LogProcessor(DataProcessor):
 def test_numeric(instance: NumericProcessor) -> None:
     print("Tesing Numeric Processor...")
 
-    print(f"Trying to validate input '42': {instance.validate(42)}")
+    print(f" Trying to validate input '42': {instance.validate(42)}")
     
-    print(f"Trying to validate input 'Hello': {instance.validate('Hello')}")
+    print(f" Trying to validate input 'Hello': {instance.validate('Hello')}")
 
-    print("Test invalid ingestion of string 'foo' without prior validation:")
+    print(" Test invalid ingestion of string 'foo' without prior validation:")
     try:
         instance.ingest("foo")
     except TypeError as e:
-        print(f"Got exception: {e}")
+        print(f" Got exception: {e}")
 
     num_data: list[int | float] = [1, 2, 3, 4, 5]
-    print(f"Processing data: {num_data}")
+    print(f" Processing data: {num_data}")
     instance.validate(num_data)
     instance.ingest(num_data)
 
-    print("Extracting 3 values...")
+    print(" Extracting 3 values...")
     for _ in range(3):
         rank, value = instance.output()
-        print(f"Numeric value {rank}: {value}")
+        print(f" Numeric value {rank}: {value}")
 
 
 def test_text(instance: TextProcessor) -> None:
