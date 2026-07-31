@@ -86,6 +86,32 @@ class LogProcessor(DataProcessor):
         for item in items:
             self._store(": ".join(item.values()))
 
+def test_numeric(instance: NumericProcessor) -> None:
+    print("Tesing Numeric Processor...")
+
+    print(f"Trying to validate input '42': {instance.validate(42)}")
+    
+    print(f"Trying to validate input 'Hello': {instance.validate('Hello')}")
+
+    print("Test invalid ingestion of string 'foo' without prior validation:")
+    try:
+        instance.ingest("foo")
+    except TypeError as e:
+        print(f"Got exception: {e}")
+
+    num_data: list[int | float] = [1, 2, 3, 4, 5]
+    print(f"Processing data: {num_data}")
+    instance.validate(num_data)
+    instance.ingest(num_data)
+
+    print("Extracting 3 values...")
+    for _ in range(3):
+        rank, value = instance.output()
+        print(f"Numeric value {rank}: {value}")
+
+
+def test_text(instance: TextProcessor) -> None:
+    print("Testing text Processor...")
 
 def main() -> None:
     num = NumericProcessor()
@@ -93,28 +119,8 @@ def main() -> None:
     log = LogProcessor()
 
     print("=== Code Nexus - Data Processor ===\n")
-
-    print("Tesing Numeric Processor...")
-    print(f"Trying to validate input '42': {num.validate(42)}")
-
-    print(f"Trying to validate input 'Hello': {num.validate('Hello')}")
-
-    print("Test invalid ingestion of string 'foo' without prior validation:")
-    try:
-        num.ingest("foo")
-    except TypeError as e:
-        print(f"Got exception: {e}")
-
-    num_data: list[int | float] = [1, 2, 3, 4, 5]
-    print(f"Processing data: {num_data}")
-    num.validate(num_data)
-    num.ingest(num_data)
-
-    print("Extracting 3 values...")
-    for _ in range(3):
-        rank, value = num.output()
-        print(f"Numeric value {rank}: {value}")
-
+    test_numeric(num)
+    test_text(txt)
 
 if __name__ == "__main__":
     main()
