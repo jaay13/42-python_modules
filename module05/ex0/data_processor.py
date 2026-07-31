@@ -111,7 +111,17 @@ def test_numeric(instance: NumericProcessor) -> None:
 
 
 def test_text(instance: TextProcessor) -> None:
-    print("Testing text Processor...")
+    print("Testing Text Processor...")
+
+    print(f" Trying to validate input '42': {instance.validate(42)}")
+    txt_data = ['Hello', 'Nexus', 'World']
+    print(f" Processing data: {txt_data}")
+    instance.validate(txt_data)
+    instance.ingest(txt_data)
+
+    print(" Extracting 1 value...")
+    rank, value = instance.output()
+    print(f" Text value {rank}: {value}")
 
 def main() -> None:
     num = NumericProcessor()
@@ -120,7 +130,12 @@ def main() -> None:
 
     print("=== Code Nexus - Data Processor ===\n")
     test_numeric(num)
+
+    print()
     test_text(txt)
+
+    print()
+
 
 if __name__ == "__main__":
     main()
