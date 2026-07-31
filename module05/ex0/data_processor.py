@@ -53,7 +53,6 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-
     def validate(self, data: Any) -> bool:
         if isinstance(data, str):
             return True
@@ -72,8 +71,7 @@ class TextProcessor(DataProcessor):
 class LogProcessor(DataProcessor):
     def _is_log(self, data: Any) -> bool:
         return isinstance(data, dict) and all(
-            isinstance(k, str) and isinstance(v, str)
-            for k, v in data.items()
+            isinstance(k, str) and isinstance(v, str) for k, v in data.items()
         )
 
     def validate(self, data: Any) -> bool:
@@ -97,9 +95,9 @@ def main() -> None:
     print("=== Code Nexus - Data Processor ===\n")
 
     print("Tesing Numeric Processor...")
-    print(f"Trying to validate input '42': {num.validate(42)}" )
+    print(f"Trying to validate input '42': {num.validate(42)}")
 
-    print(f"Trying to validate input 'Hello': {num.validate("Hello")}")
+    print(f"Trying to validate input 'Hello': {num.validate('Hello')}")
 
     print("Test invalid ingestion of string 'foo' without prior validation:")
     try:
@@ -107,15 +105,16 @@ def main() -> None:
     except TypeError as e:
         print(f"Got exception: {e}")
 
-    num_data = [1, 2, 3, 4, 5]
+    num_data: list[int | float] = [1, 2, 3, 4, 5]
     print(f"Processing data: {num_data}")
     num.validate(num_data)
     num.ingest(num_data)
-    
+
     print("Extracting 3 values...")
     for _ in range(3):
         rank, value = num.output()
         print(f"Numeric value {rank}: {value}")
-    
+
+
 if __name__ == "__main__":
     main()
