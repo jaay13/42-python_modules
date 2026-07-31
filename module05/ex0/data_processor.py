@@ -87,3 +87,35 @@ class LogProcessor(DataProcessor):
         items = data if isinstance(data, list) else [data]
         for item in items:
             self._store(": ".join(item.values()))
+
+
+def main() -> None:
+    num = NumericProcessor()
+    txt = TextProcessor()
+    log = LogProcessor()
+
+    print("=== Code Nexus - Data Processor ===\n")
+
+    print("Tesing Numeric Processor...")
+    print(f"Trying to validate input '42': {num.validate(42)}" )
+
+    print(f"Trying to validate input 'Hello': {num.validate("Hello")}")
+
+    print("Test invalid ingestion of string 'foo' without prior validation:")
+    try:
+        num.ingest("foo")
+    except TypeError as e:
+        print(f"Got exception: {e}")
+
+    num_data = [1, 2, 3, 4, 5]
+    print(f"Processing data: {num_data}")
+    num.validate(num_data)
+    num.ingest(num_data)
+    
+    print("Extracting 3 values...")
+    for _ in range(3):
+        rank, value = num.output()
+        print(f"Numeric value {rank}: {value}")
+    
+if __name__ == "__main__":
+    main()
