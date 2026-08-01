@@ -149,6 +149,28 @@ class LogProcessor(DataProcessor):
             self._store(": ".join(item.values()))
 
 
+class DataStream:
+    """"""
+    def __init__(self):
+        self._processors: list[DataProcessor] = []
+
+    def register_processor(self, proc: DataProcessor) -> None:
+        self._processors = self._processors.append(proc)
+
+    def process_stream(self, stream: list[Any]) -> None:
+        for element in stream:
+            for proc in self._processors:
+                if proc.validate(element):
+                    proc.ingest(element)
+                    continue
+                continue
+            print(f"DataStream error - Can't process element in stream: {element}")
+  
+    def print_processors_stats(self) -> None:
+        pass
+
+
+
 def test_numeric(instance: NumericProcessor) -> None:
     """Exercise validation, error handling, and FIFO extraction."""
     print("Testing Numeric Processor...")
