@@ -191,7 +191,7 @@ class DataStream:
         else:
             for proc in self._processors:
                 print(
-                    f"{type(proc).__name__}: total {proc._rank} items processed, "
+                    f"{type(proc).__name__.replace("Processor", " Processor")}: total {proc._rank} items processed, "
                     f"remaining {len(proc._storage)} on processor"
                 )
 
