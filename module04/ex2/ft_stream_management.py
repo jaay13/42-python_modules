@@ -4,7 +4,7 @@ from sys import argv, stderr, stdin, stdout
 def main() -> None:
     # No arg entered
     if len(argv) == 1:
-        print("usage: ft_stream_management.py <file>")
+        print("Usage: ft_stream_management.py <file>")
         return
 
     # Argument(filepath) stored as fd

@@ -4,7 +4,7 @@ from sys import argv
 def main() -> None:
     # No arg entered
     if len(argv) == 1:
-        print("usage: ft_archive_creation.py <file>")
+        print("Usage: ft_archive_creation.py <file>")
         return
 
     # Argument(filepath) stored as fd
