@@ -1,11 +1,30 @@
-"""Code Nexus - Data Processor.
+"""Code Nexus - Data Stream.
 
 Defines an abstract ``DataProcessor`` interface and three concrete
 processors (numeric, text, log) that each know how to validate and
 ingest their own kind of data, while sharing the same public API.
-This is a classic example of polymorphism through an Abstract Base
-Class (ABC): calling code only ever talks to a ``DataProcessor``,
-never needing to know which subclass it actually holds.
+On top of that, ``DataStream`` holds a list of registered
+``DataProcessor`` instances and routes each element of a mixed input
+stream to whichever one accepts it.
+
+How does polymorphism let ``DataStream`` handle different data types
+without knowing their specific implementations? ``DataStream`` only
+ever calls ``proc.validate(element)`` and ``proc.ingest(element)``
+through the shared ``DataProcessor`` interface. It never inspects
+``element``'s type itself, and it never checks which concrete
+subclass ``proc`` is -- at runtime, Python dispatches each call to
+whichever subclass the object actually is, so ``NumericProcessor``,
+``TextProcessor``, and ``LogProcessor`` each apply their own
+validation and storage rules without ``DataStream`` needing an
+``isinstance`` chain or any other knowledge of their internals.
+
+The benefit is decoupling: ``DataStream``'s routing logic is written
+once against the abstract interface and never has to change when a
+new kind of data shows up. Supporting it is just a matter of writing
+a new ``DataProcessor`` subclass and registering an instance -- the
+stream-processing code stays exactly the same. It also keeps each
+processor's own logic isolated and independently testable, instead
+of concentrating type-specific branching inside ``DataStream``.
 """
 
 from abc import ABC, abstractmethod
@@ -172,74 +191,9 @@ class DataStream:
         else:
             for proc in self._processors:
                 print(
-                    f"{type(proc).__name__} Processor: total {proc._rank} items processed, "
+                    f"{type(proc).__name__}: total {proc._rank} items processed, "
                     f"remaining {len(proc._storage)} on processor"
                 )
-
-
-
-def test_numeric(instance: NumericProcessor) -> None:
-    """Exercise validation, error handling, and FIFO extraction."""
-    print("Testing Numeric Processor...")
-
-    print(f" Trying to validate input '42': {instance.validate(42)}")
-
-    print(f" Trying to validate input 'Hello': {instance.validate('Hello')}")
-
-    # Deliberately skip validate() before ingest() so the guard
-    # clause inside ingest() raises instead of silently corrupting
-    # the storage with bad data.
-    print(" Test invalid ingestion of string 'foo' without prior validation:")
-    try:
-        instance.ingest("foo")
-    except TypeError as e:
-        print(f" Got exception: {e}")
-
-    num_data: list[int | float] = [1, 2, 3, 4, 5]
-    print(f" Processing data: {num_data}")
-    instance.validate(num_data)
-    instance.ingest(num_data)
-
-    # output() always returns the oldest remaining item first, so
-    # ranks come back in ascending order: 0, 1, 2.
-    print(" Extracting 3 values...")
-    for _ in range(3):
-        rank, value = instance.output()
-        print(f" Numeric value {rank}: {value}")
-
-
-def test_text(instance: TextProcessor) -> None:
-    """Exercise validation and ingestion of a list of strings."""
-    print("Testing Text Processor...")
-
-    print(f" Trying to validate input '42': {instance.validate(42)}")
-
-    txt_data = ['Hello', 'Nexus', 'World']
-    print(f" Processing data: {txt_data}")
-    instance.validate(txt_data)
-    instance.ingest(txt_data)
-
-    print(" Extracting 1 value...")
-    rank, value = instance.output()
-    print(f" Text value {rank}: {value}")
-
-
-def test_log(instance: LogProcessor) -> None:
-    """Exercise validation and ingestion of a list of log entries."""
-    print("Testing Log Processor...")
-
-    print(f" Trying to validate input 'Hello': {instance.validate('Hello')}")
-
-    log_data = [{'log_level': 'NOTICE', 'log_message': 'Connection to server'},
-                {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}]
-    print(f" Processing data: {log_data}")
-    instance.validate(log_data)
-    instance.ingest(log_data)
-
-    print(" Extracting 2 values...")
-    for _ in range(2):
-        rank, value = instance.output()
-        print(f" Log entry {rank}: {value}")
 
 
 def main() -> None:
@@ -247,14 +201,47 @@ def main() -> None:
     txt = TextProcessor()
     log = LogProcessor()
 
-    print("=== Code Nexus - Data Processor ===\n")
-    test_numeric(num)
+    print("=== Code Nexus - Data Stream ===\n")
 
-    print()
-    test_text(txt)
+    print("Initialize Data Stream...")
+    stream = DataStream()
 
-    print()
-    test_log(log)
+    print("== DataStream statistics ==")
+    stream.print_processors_stats()
+
+    print("\nRegistering Numeric Processor\n")
+    stream.register_processor(num)
+
+    data = ['Hello World', [3.14, -1, 2.71], 
+            [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
+             {'log_level': 'INFO', 'log_message': 'User wil is connected'}], 42, ['Hi', 'five']]
+
+    print(f"Send first batch of data on stream: {data}")
+    stream.process_stream(data)
+
+    print("== DataStream statistics ==")
+    stream.print_processors_stats()
+
+    print("\nRegistering other data processors")
+    stream.register_processor(txt)
+    stream.register_processor(log)
+
+    print("Send the same batch again")
+    stream.process_stream(data)
+
+    print("== DataStream statistics ==")
+    stream.print_processors_stats()
+
+    print("\nConsume some elements from the data processors: Numeric 3, Text 2, Log 1")
+    for _ in range(3):
+        num.output()
+    for _ in range(2):
+        txt.output()
+    log.output()
+
+    print("== DataStream statistics ==")
+    stream.print_processors_stats()
+    
 
 
 if __name__ == "__main__":
