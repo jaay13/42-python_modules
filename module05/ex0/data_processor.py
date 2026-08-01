@@ -46,7 +46,7 @@ class NumericProcessor(DataProcessor):
 
     def ingest(self, data: int | float | list[int | float]) -> None:
         if not self.validate(data):
-            raise TypeError("Improper Numeric data")
+            raise TypeError("Improper numeric data")
         items = data if isinstance(data, list) else [data]
         for item in items:
             self._store(str(item))
@@ -86,11 +86,12 @@ class LogProcessor(DataProcessor):
         for item in items:
             self._store(": ".join(item.values()))
 
+
 def test_numeric(instance: NumericProcessor) -> None:
-    print("Tesing Numeric Processor...")
+    print("Testing Numeric Processor...")
 
     print(f" Trying to validate input '42': {instance.validate(42)}")
-    
+
     print(f" Trying to validate input 'Hello': {instance.validate('Hello')}")
 
     print(" Test invalid ingestion of string 'foo' without prior validation:")
@@ -123,6 +124,23 @@ def test_text(instance: TextProcessor) -> None:
     rank, value = instance.output()
     print(f" Text value {rank}: {value}")
 
+
+def test_log(instance: LogProcessor) -> None:
+    print("Testing Log Processor...")
+
+    print(f" Trying to validate input 'Hello': {instance.validate('Hello')}")
+    log_data = [{'log_level': 'NOTICE', 'log_message': 'Connection to server'},
+                {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}]
+    print(f" Processing data: {log_data}")
+    instance.validate(log_data)
+    instance.ingest(log_data)
+
+    print(" Extracting 2 values...")
+    for _ in range(2):
+        rank, value = instance.output()
+        print(f" Log entry {rank}: {value}")
+
+
 def main() -> None:
     num = NumericProcessor()
     txt = TextProcessor()
@@ -135,6 +153,7 @@ def main() -> None:
     test_text(txt)
 
     print()
+    test_log(log)
 
 
 if __name__ == "__main__":
