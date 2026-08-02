@@ -1,5 +1,22 @@
+""" Code Nexus - Data Pipeline
+
+Duck typing is another way to achieve Polymorphism in Python that
+doesn't require INHERITANCE. It works by allowing different objects 
+to use the same methods as long as they define them.
+
+
+
+
+
+
+"""
+
+
+
+
+
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Protocol
 
 
 class DataProcessor(ABC):
@@ -174,6 +191,22 @@ class DataStream:
                     f": total {proc._rank} items processed, "
                     f"remaining {len(proc._storage)} on processor"
                 )
+
+    def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        pass
+
+
+class ExportPlugin(Protocol):
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        pass
+
+class CSVPlugin:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        pass
+
+class JSONPlugin:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        pass
 
 
 def main() -> None:
