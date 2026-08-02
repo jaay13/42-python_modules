@@ -195,10 +195,20 @@ class DataStream:
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         pass
 
-
 class ExportPlugin(Protocol):
+    """Structural contract every export plugin must satisfy.
+
+    Unlike ``DataProcessor``, this is a ``Protocol``: plugins are not
+    required to inherit from it. Any object defining a compatible
+    ``process_output`` method is accepted, which is exactly what duck
+    typing does at runtime. ``Protocol`` only makes the expectation
+    explicit so type checkers can verify it too.
+    """
+
     def process_output(self, data: list[tuple[int, str]]) -> None:
+        """Export the consumed (rank, item) pairs."""
         pass
+
 
 class CSVPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
