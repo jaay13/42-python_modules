@@ -140,14 +140,18 @@ class LogProcessor(DataProcessor):
 
 
 class DataStream:
-    """"""
+    """Routes each element of a stream to the first processor that
+    validates it, talking only to the abstract interface."""
+
     def __init__(self) -> None:
         self._processors: list[DataProcessor] = []
 
     def register_processor(self, proc: DataProcessor) -> None:
+        """Add a processor at the end of the routing order."""
         self._processors.append(proc)
 
     def process_stream(self, stream: list[Any]) -> None:
+        """Ingest each element, reporting the ones nothing accepts."""
         for element in stream:
             for proc in self._processors:
                 if proc.validate(element):
@@ -160,6 +164,7 @@ class DataStream:
                 )
 
     def print_processors_stats(self) -> None:
+        """Print processed and remaining item counts per processor."""
         if len(self._processors) == 0:
             print("No processor found, no data")
         else:
