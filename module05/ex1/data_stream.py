@@ -181,17 +181,21 @@ class DataStream:
             for proc in self._processors:
                 if proc.validate(element):
                     proc.ingest(element)
-                    break 
+                    break
             else:
-                print(f"DataStream error - Can't process element in stream: {element}")
-  
+                print(
+                    f"DataStream error - "
+                    f"Can't process element in stream: {element}"
+                )
+
     def print_processors_stats(self) -> None:
         if len(self._processors) == 0:
             print("No processor found, no data")
         else:
             for proc in self._processors:
                 print(
-                    f"{type(proc).__name__.replace("Processor", " Processor")}: total {proc._rank} items processed, "
+                    f"{type(proc).__name__.replace("Processor", " Processor")}"
+                    f": total {proc._rank} items processed, "
                     f"remaining {len(proc._storage)} on processor"
                 )
 
@@ -212,9 +216,11 @@ def main() -> None:
     print("\nRegistering Numeric Processor\n")
     stream.register_processor(num)
 
-    data = ['Hello World', [3.14, -1, 2.71], 
-            [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-             {'log_level': 'INFO', 'log_message': 'User wil is connected'}], 42, ['Hi', 'five']]
+    data = ['Hello World', [3.14, -1, 2.71],
+            [{'log_level': 'WARNING', 'log_message':
+             'connect to host localhost port 22: Connection refused'},
+             {'log_level': 'INFO', 'log_message': 'User jay is connected'}
+             ], 42, ['Hi', 'five']]
 
     print(f"Send first batch of data on stream: {data}")
     stream.process_stream(data)
@@ -232,7 +238,10 @@ def main() -> None:
     print("== DataStream statistics ==")
     stream.print_processors_stats()
 
-    print("\nConsume some elements from the data processors: Numeric 3, Text 2, Log 1")
+    print(
+        "\nConsume some elements from the data processors: "
+        "Numeric 3, Text 2, Log 1"
+    )
     for _ in range(3):
         num.output()
     for _ in range(2):
@@ -241,7 +250,6 @@ def main() -> None:
 
     print("== DataStream statistics ==")
     stream.print_processors_stats()
-    
 
 
 if __name__ == "__main__":
