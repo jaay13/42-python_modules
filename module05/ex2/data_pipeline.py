@@ -193,7 +193,14 @@ class DataStream:
                 )
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
-        pass
+        for proc in self._processors:
+            collected: list[tuple[int, str]] = []
+            for _ in range(nb):
+                try:
+                    collected.append(proc.output())
+                except IndexError:
+                    break
+            plugin.process_output(collected)
 
 class ExportPlugin(Protocol):
     """Structural contract every export plugin must satisfy.
@@ -207,16 +214,20 @@ class ExportPlugin(Protocol):
 
     def process_output(self, data: list[tuple[int, str]]) -> None:
         """Export the consumed (rank, item) pairs."""
-        pass
 
 
 class CSVPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
-        pass
+        output = [item[1] for item in data]
+        print("CSV Output:")
+        print(",".join(output))
+
 
 class JSONPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
-        pass
+        values = [f'"item_{rank}": "{value}"' for rank, value in data]
+        print("JSON Output:")
+        print(f"{{{', '.join(values)}}}")
 
 
 def main() -> None:
