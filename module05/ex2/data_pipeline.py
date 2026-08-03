@@ -238,7 +238,7 @@ def main() -> None:
 
     print("=== Code Nexus - Data Pipeline ===\n")
 
-    print("Initialize Data Stream...")
+    print("Initialize Data Stream...\n")
     stream = DataStream()
 
     print("== DataStream statistics ==")
@@ -255,7 +255,7 @@ def main() -> None:
              {'log_level': 'INFO', 'log_message': 'User jay is connected'}
              ], 42, ['Hi', 'five']]
 
-    print(f"Send first batch of data on stream: {data}")
+    print(f"Send first batch of data on stream: {data}\n")
     stream.process_stream(data)
 
     print("== DataStream statistics ==")
@@ -270,7 +270,7 @@ def main() -> None:
                     'Certificateexpires in 10 days'}],
                       [32, 42, 64, 84, 128, 168], 'World hello']
 
-    print(f"Send another batch of data: {data_2}")
+    print(f"\nSend another batch of data: {data_2}\n")
     stream.process_stream(data_2)
 
     print("== DataStream statistics ==")
@@ -279,7 +279,7 @@ def main() -> None:
     print("\nSend 5 processed data from each processor to a JSON plugin:")
     stream.output_pipeline(5, JSONPlugin())
 
-    print("== DataStream statistics ==")
+    print("\n== DataStream statistics ==")
     stream.print_processors_stats()
 
 
