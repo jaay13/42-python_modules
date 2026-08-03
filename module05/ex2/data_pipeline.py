@@ -156,6 +156,20 @@ class LogProcessor(DataProcessor):
             self._store(": ".join(item.values()))
 
 
+class ExportPlugin(Protocol):
+    """Structural contract every export plugin must satisfy.
+
+    Unlike ``DataProcessor``, this is a ``Protocol``: plugins are not
+    required to inherit from it. Any object defining a compatible
+    ``process_output`` method is accepted, which is exactly what duck
+    typing does at runtime. ``Protocol`` only makes the expectation
+    explicit so type checkers can verify it too.
+    """
+
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        """Export the consumed (rank, item) pairs."""
+
+
 class DataStream:
     """Routes each element of a stream to the first processor that
     validates it, talking only to the abstract interface."""
@@ -202,19 +216,6 @@ class DataStream:
                     break
             plugin.process_output(collected)
 
-class ExportPlugin(Protocol):
-    """Structural contract every export plugin must satisfy.
-
-    Unlike ``DataProcessor``, this is a ``Protocol``: plugins are not
-    required to inherit from it. Any object defining a compatible
-    ``process_output`` method is accepted, which is exactly what duck
-    typing does at runtime. ``Protocol`` only makes the expectation
-    explicit so type checkers can verify it too.
-    """
-
-    def process_output(self, data: list[tuple[int, str]]) -> None:
-        """Export the consumed (rank, item) pairs."""
-
 
 class CSVPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
@@ -235,7 +236,7 @@ def main() -> None:
     txt = TextProcessor()
     log = LogProcessor()
 
-    print("=== Code Nexus - Data Stream ===\n")
+    print("=== Code Nexus - Data Pipeline ===\n")
 
     print("Initialize Data Stream...")
     stream = DataStream()
@@ -243,8 +244,10 @@ def main() -> None:
     print("== DataStream statistics ==")
     stream.print_processors_stats()
 
-    print("\nRegistering Numeric Processor\n")
+    print("\nRegistering Processors\n")
     stream.register_processor(num)
+    stream.register_processor(txt)
+    stream.register_processor(log)
 
     data = ['Hello World', [3.14, -1, 2.71],
             [{'log_level': 'WARNING', 'log_message':
@@ -258,25 +261,23 @@ def main() -> None:
     print("== DataStream statistics ==")
     stream.print_processors_stats()
 
-    print("\nRegistering other data processors")
-    stream.register_processor(txt)
-    stream.register_processor(log)
+    print("\nSend 3 processed data from each processor to a CSV plugin:")
+    stream.output_pipeline(3, CSVPlugin())
 
-    print("Send the same batch again")
-    stream.process_stream(data)
+    data_2 =  [21, ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
+                [{'log_level': 'ERROR', 'log_message': '500 server crash'},
+                  {'log_level': 'NOTICE', 'log_message':
+                    'Certificateexpires in 10 days'}],
+                      [32, 42, 64, 84, 128, 168], 'World hello']
+
+    print(f"Send another batch of data: {data_2}")
+    stream.process_stream(data_2)
 
     print("== DataStream statistics ==")
     stream.print_processors_stats()
 
-    print(
-        "\nConsume some elements from the data processors: "
-        "Numeric 3, Text 2, Log 1"
-    )
-    for _ in range(3):
-        num.output()
-    for _ in range(2):
-        txt.output()
-    log.output()
+    print("\nSend 5 processed data from each processor to a JSON plugin:")
+    stream.output_pipeline(5, JSONPlugin())
 
     print("== DataStream statistics ==")
     stream.print_processors_stats()
