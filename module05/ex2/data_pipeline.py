@@ -1,19 +1,18 @@
-""" Code Nexus - Data Pipeline
+"""Code Nexus - Data Pipeline.
 
 Duck typing is another way to achieve Polymorphism in Python that
-doesn't require INHERITANCE. It works by allowing different objects 
+doesn't require INHERITANCE. It works by allowing different objects
 to use the same methods as long as they define them.
 
-
-
-
-
-
+``ExportPlugin`` captures this idea as a ``Protocol`` instead of an
+``ABC``: ``CSVPlugin`` and ``JSONPlugin`` satisfy it purely by
+defining a matching ``process_output`` method, with no shared base
+class and no explicit registration required. ``DataStream`` (via
+``output_pipeline``) only ever calls ``plugin.process_output(...)``,
+so it can export to any format whose plugin defines that one method.
+Adding a new export format is just a matter of writing a new plugin
+class -- ``DataStream`` never has to change.
 """
-
-
-
-
 
 from abc import ABC, abstractmethod
 from typing import Any, Protocol
@@ -207,25 +206,58 @@ class DataStream:
                 )
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        """Consume up to ``nb`` items from every processor and export them.
+
+        Each processor is drained independently, so one processor
+        running out early doesn't affect how many items are pulled
+        from the others. The exported batch is handed to ``plugin``
+        through the shared ``ExportPlugin`` interface, so this method
+        never needs to know which concrete plugin it was given.
+        """
         for proc in self._processors:
             collected: list[tuple[int, str]] = []
             for _ in range(nb):
                 try:
                     collected.append(proc.output())
                 except IndexError:
+                    # This processor has fewer than nb items left;
+                    # export what was gathered instead of raising.
                     break
             plugin.process_output(collected)
 
 
 class CSVPlugin:
+    """Export plugin that renders a batch as one CSV line.
+
+    Satisfies ``ExportPlugin`` purely by duck typing: nothing here
+    inherits from ``ExportPlugin``, it just defines a compatible
+    ``process_output`` method.
+    """
+
     def process_output(self, data: list[tuple[int, str]]) -> None:
+        """Print the batch's values only, comma-separated."""
+        # The rank isn't part of a CSV row, so only the item text
+        # (item[1]) is kept; item[0] (the rank) is dropped.
         output = [item[1] for item in data]
         print("CSV Output:")
         print(",".join(output))
 
 
 class JSONPlugin:
+    """Export plugin that renders a batch as one JSON object.
+
+    Satisfies ``ExportPlugin`` purely by duck typing, exactly like
+    ``CSVPlugin`` -- both are accepted anywhere an ``ExportPlugin``
+    is expected, without sharing a common base class.
+    """
+
     def process_output(self, data: list[tuple[int, str]]) -> None:
+        """Print the batch as ``{"item_<rank>": "<value>", ...}``.
+
+        Built by hand with f-strings and ``join`` rather than the
+        ``json`` module, since only ``abc`` and ``typing`` imports
+        are authorized for this project.
+        """
         values = [f'"item_{rank}": "{value}"' for rank, value in data]
         print("JSON Output:")
         print(f"{{{', '.join(values)}}}")
@@ -264,11 +296,11 @@ def main() -> None:
     print("\nSend 3 processed data from each processor to a CSV plugin:")
     stream.output_pipeline(3, CSVPlugin())
 
-    data_2 =  [21, ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
-                [{'log_level': 'ERROR', 'log_message': '500 server crash'},
-                  {'log_level': 'NOTICE', 'log_message':
-                    'Certificateexpires in 10 days'}],
-                      [32, 42, 64, 84, 128, 168], 'World hello']
+    data_2 = [21, ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
+              [{'log_level': 'ERROR', 'log_message': '500 server crash'},
+               {'log_level': 'NOTICE', 'log_message':
+                'Certificate expires in 10 days'}],
+              [32, 42, 64, 84, 128, 168], 'World hello']
 
     print(f"\nSend another batch of data: {data_2}\n")
     stream.process_stream(data_2)
