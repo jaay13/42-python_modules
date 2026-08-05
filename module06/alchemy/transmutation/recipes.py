@@ -10,5 +10,5 @@ def lead_to_gold() -> str:
     fire = create_fire()
     return (
         f"Recipe transmuting Lead to Gold: brew '{air}' "
-        f"and '{strength}' mixed with {fire}"
+        f"and '{strength}' mixed with '{fire}'"
     )
