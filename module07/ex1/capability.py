@@ -6,6 +6,7 @@ class HealCapability(ABC):
     def heal(self) -> str:
         """This will need to return a proper heal string"""
 
+
 class TransformCapability(ABC):
     def __init__(self) -> None:
         self._transformed = False
