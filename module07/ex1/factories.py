@@ -1,5 +1,4 @@
 from ex0 import CreatureFactory
-from ex0.creature import Creature
 
 from .creatures import Bulbasaur, Venusaur, Zoroark, Zorua
 
