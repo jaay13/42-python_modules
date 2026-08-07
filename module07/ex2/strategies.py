@@ -22,3 +22,14 @@ class AggressiveStrategy(BattleStrategy):
 
     def is_valid(self, creature: Creature) -> bool:
         return isinstance(creature, TransformCapability)
+
+
+class DefensiveStrategy(BattleStrategy):
+    def act(self, creature: Creature) -> None:
+        self._check_valid(creature)
+        if isinstance(creature, HealCapability):
+            print(creature.attack())
+            print(creature.heal())
+
+    def is_valid(self, creature: Creature) -> bool:
+        return isinstance(creature, HealCapability)
