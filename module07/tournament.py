@@ -22,3 +22,25 @@ if __name__ == "__main__":
     aggressive = AggressiveStrategy()
     defensive = DefensiveStrategy()
     normal = NormalStrategy()
+
+    tournament_0 = [
+        (flame_factory, normal)
+        (healing_factory, defensive)
+    ]
+    print("Tournament 0 (basic)")
+    battle(tournament_0)
+
+    tournament_1 = [
+        (flame_factory, aggressive)
+        (healing_factory, defensive)
+    ]
+    print("Tournament 1 (error)")
+    battle(tournament_1)
+
+    tournament_2 = [
+        (aqua_factory, normal)
+        (healing_factory, defensive)
+        (transform_factory, aggressive)
+    ]
+    print("Tournament 2 (multiple battles)")
+    battle(tournament_2)
