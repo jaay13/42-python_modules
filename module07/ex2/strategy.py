@@ -17,5 +17,6 @@ class BattleStrategy(ABC):
     def _check_valid(self, creature: Creature) -> None:
         """Raise InvalidStrategyError if the Creature isn't suitable"""
         if not self.is_valid(creature):
-            strategy_label = type(self).__name__.removesuffix("Strategy").lower()
+            cls_name = type(self).__name__
+            strategy_label = cls_name.removesuffix("Strategy").lower()
             raise InvalidStrategyError(creature._name, strategy_label)
