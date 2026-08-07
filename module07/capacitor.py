@@ -7,18 +7,18 @@ def test_healing(factory: HealingCreatureFactory) -> None:
     evolved = factory.create_evolved()
 
     print(" base:")
-    print(f"{base.describe()}")
+    print(base.describe())
 
-    print(f"{base.attack()}")
+    print(base.attack())
 
-    print(f"{base.heal()}")
+    print(base.heal())
 
     print(" evolved:")
-    print(f"{evolved.describe()}")
+    print(evolved.describe())
 
-    print(f"{evolved.attack()}")
+    print(evolved.attack())
 
-    print(f"{evolved.heal()}")
+    print(evolved.heal())
 
 
 def test_transform(factory: TransformCreatureFactory) -> None:
@@ -28,26 +28,26 @@ def test_transform(factory: TransformCreatureFactory) -> None:
     evolved = factory.create_evolved()
 
     print(" base:")
-    print(f"{base.describe()}")
+    print(base.describe())
 
-    print(f"{base.attack()}")
+    print(base.attack())
 
-    print(f"{base.transform()}")
+    print(base.transform())
 
-    print(f"{base.attack()}")
+    print(base.attack())
 
-    print(f"{base.revert()}")
+    print(base.revert())
 
     print(" evolved:")
-    print(f"{evolved.describe()}")
+    print(evolved.describe())
 
-    print(f"{evolved.attack()}")
+    print(evolved.attack())
 
-    print(f"{evolved.transform()}")
+    print(evolved.transform())
 
-    print(f"{evolved.attack()}")
+    print(evolved.attack())
 
-    print(f"{evolved.revert()}")
+    print(evolved.revert())
 
 
 if __name__ == "__main__":

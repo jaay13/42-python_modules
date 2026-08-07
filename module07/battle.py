@@ -22,13 +22,13 @@ def test_battle(flame: FlameFactory, aqua: AquaFactory) -> None:
     flame_base = flame.create_base()
     aqua_base = aqua.create_base()
 
-    print(f"{flame_base.describe()}")
+    print(flame_base.describe())
     print(" vs.")
-    print(f"{aqua_base.describe()}")
+    print(aqua_base.describe())
     print(" fight!")
 
-    print(f"{flame_base.attack()}")
-    print(f"{aqua_base.attack()}")
+    print(flame_base.attack())
+    print(aqua_base.attack())
 
 
 if __name__ == "__main__":
