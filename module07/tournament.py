@@ -9,6 +9,19 @@ from ex2 import (
 )
 
 
+def run_tournament(
+    label: str,
+    description: str,
+    opponents: list[tuple[CreatureFactory, BattleStrategy]]
+) -> None:
+    """Print a tournament's header, then run its battles."""
+    print(label)
+    print(description)
+    print("*** Tournament ***")
+    print(f"{len(opponents)} opponents involved")
+    battle(opponents)
+
+
 def battle(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> None:
     for i, a in enumerate(opponents):
         for b in opponents[i + 1:]:
@@ -28,7 +41,7 @@ def battle(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> None:
                 strategy_a.act(creature_a)
                 strategy_b.act(creature_b)
             except InvalidStrategyError as e:
-                print(f"Battle error, aborting tournament: {e}\n")
+                print(f"Battle error, aborting tournament: {e}")
                 return
 
 
@@ -47,30 +60,34 @@ if __name__ == "__main__":
         (flame_factory, normal),
         (healing_factory, defensive),
     ]
-    print("Tournament 0 (basic)")
-    print(" [ (Charmander+Normal), (Bulbasaur+Defensive) ]")
-    print("*** Tournament ***")
-    print(f"{len(tournament_0)} opponents involved")
-    battle(tournament_0)
+
+    run_tournament(
+        "Tournament 0 (basic)",
+        " [ (Charmander+Normal), (Healing+Defensive) ]",
+        tournament_0
+    )
     print()
 
     tournament_1 = [
         (flame_factory, aggressive),
         (healing_factory, defensive),
     ]
-    print("Tournament 1 (error)")
-    print(" [ (Charmander+Aggressive), (Bulbasaur+Defensive) ]")
-    print("*** Tournament ***")
-    print(f"{len(tournament_1)} opponents involved")
-    battle(tournament_1)
+
+    run_tournament(
+        "Tournament 1 (error)",
+        " [ (Charmander+Aggressive), (Healing+Defensive) ]",
+        tournament_1
+    )
+    print()
 
     tournament_2 = [
         (aqua_factory, normal),
         (healing_factory, defensive),
         (transform_factory, aggressive),
     ]
-    print("Tournament 2 (multiple battles)")
-    print(" [ (Squirtle+Normal), (Bulbasaur+Defensive), (Zorua+Aggressive) ]")
-    print("*** Tournament ***")
-    print(f"{len(tournament_2)} opponents involved")
-    battle(tournament_2)
+
+    run_tournament(
+        "Tournament 2 (multiple battles)",
+        " [ (Squirtle+Normal), (Healing+Defensive), (Transform+Aggressive) ]",
+        tournament_2
+    )
