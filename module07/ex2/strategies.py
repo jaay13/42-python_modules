@@ -5,11 +5,20 @@ from .strategy import BattleStrategy
 
 
 class NormalStrategy(BattleStrategy):
-    def act(self, creature: Creature):
+    def act(self, creature: Creature) -> None:
         print(creature.attack())
 
-    def is_valid(self):
+    def is_valid(self, creature: Creature) -> bool:
         return True
 
+
 class AggressiveStrategy(BattleStrategy):
-    pass # WIP
+    def act(self, creature: Creature) -> None:
+        self._check_valid(creature)
+        if isinstance(creature, TransformCapability):
+            print(creature.transform())
+            print(creature.attack())
+            print(creature.revert())
+
+    def is_valid(self, creature: Creature) -> bool:
+        return isinstance(creature, TransformCapability)
