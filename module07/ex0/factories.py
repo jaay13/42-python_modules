@@ -4,6 +4,8 @@ from .factory import CreatureFactory
 
 
 class FlameFactory(CreatureFactory):
+    """Factory for the Fire-type Charmander family."""
+
     def create_base(self) -> Creature:
         return Charmander("Charmander", "Fire")
 
@@ -12,6 +14,8 @@ class FlameFactory(CreatureFactory):
 
 
 class AquaFactory(CreatureFactory):
+    """Factory for the Water-type Squirtle family."""
+
     def create_base(self) -> Creature:
         return Squirtle("Squirtle", "Water")
 

@@ -10,12 +10,12 @@ from ex2 import (
 
 
 def run_tournament(
-    label: str,
+    header: str,
     description: str,
     opponents: list[tuple[CreatureFactory, BattleStrategy]]
 ) -> None:
     """Print a tournament's header, then run its battles."""
-    print(label)
+    print(header)
     print(description)
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")
@@ -23,6 +23,11 @@ def run_tournament(
 
 
 def battle(opponents: list[tuple[CreatureFactory, BattleStrategy]]) -> None:
+    """Make every opponent fight each other exactly once.
+
+    Each fighter uses its own paired BattleStrategy. An invalid
+    Creature-strategy combination aborts the rest of this tournament.
+    """
     for i, a in enumerate(opponents):
         for b in opponents[i + 1:]:
             factory_a, strategy_a = a

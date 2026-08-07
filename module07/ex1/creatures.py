@@ -21,6 +21,7 @@ class Venusaur(Creature, HealCapability):
 
 class Zorua(Creature, TransformCapability):
     def attack(self) -> str:
+        """Attack normally, or with a boosted move if transformed."""
         if not self._transformed:
             return f"{self._name} uses Scratch!"
         else:
@@ -43,6 +44,7 @@ class Zorua(Creature, TransformCapability):
 
 class Zoroark(Creature, TransformCapability):
     def attack(self) -> str:
+        """Attack normally, or with a boosted move if transformed."""
         if not self._transformed:
             return f"{self._name} uses Sucker Punch!"
         else:

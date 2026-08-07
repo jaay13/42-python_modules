@@ -6,9 +6,11 @@ from .exceptions import InvalidStrategyError
 
 
 class BattleStrategy(ABC):
+    """Abstract strategy for how a Creature behaves during a battle."""
+
     @abstractmethod
     def act(self, creature: Creature) -> None:
-        """Will be called by the tournament script"""
+        """Perform this strategy's battle sequence on the given Creature."""
 
     @abstractmethod
     def is_valid(self, creature: Creature) -> bool:

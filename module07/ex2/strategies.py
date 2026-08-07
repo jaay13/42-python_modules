@@ -5,6 +5,8 @@ from .strategy import BattleStrategy
 
 
 class NormalStrategy(BattleStrategy):
+    """Suitable for any Creature; simply attacks."""
+
     def act(self, creature: Creature) -> None:
         print(creature.attack())
 
@@ -13,6 +15,9 @@ class NormalStrategy(BattleStrategy):
 
 
 class AggressiveStrategy(BattleStrategy):
+    """Suitable for Creatures with transform capability; transforms,
+    attacks, then reverts."""
+
     def act(self, creature: Creature) -> None:
         self._check_valid(creature)
         if isinstance(creature, TransformCapability):
@@ -25,6 +30,8 @@ class AggressiveStrategy(BattleStrategy):
 
 
 class DefensiveStrategy(BattleStrategy):
+    """Suitable for Creatures with healing capability; attacks, then heals."""
+
     def act(self, creature: Creature) -> None:
         self._check_valid(creature)
         if isinstance(creature, HealCapability):
