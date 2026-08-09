@@ -1,3 +1,5 @@
+"""Check dependencies, analyse Matrix data and compare pip to Poetry."""
+
 from importlib.metadata import PackageNotFoundError, version
 
 PACKAGES = [
@@ -39,6 +41,12 @@ def compare_managers() -> None:
 
 
 def run_analysis() -> None:
+    """Generate, analyse and plot simulated Matrix activity data.
+
+    Imports live here rather than at module level so the
+    dependency check in main() can report missing packages
+    instead of the program failing on import.
+    """
     import matplotlib
 
     matplotlib.use("Agg")
@@ -73,7 +81,7 @@ def run_analysis() -> None:
 
 
 def main() -> None:
-
+    """Verify every dependency is present, then run the analysis."""
     print("\nLOADING STATUS: Loading programs...\n")
 
     print("Checking dependencies:")
