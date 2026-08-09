@@ -2,13 +2,12 @@
 # depth, so "__pycache__/" covers module06/alchemy/__pycache__/ too.
 
 # --- Virtual environments ---
-matrix_env/
+matrix_env*/
 test_env/
 venv/
 .venv/
 env/
 ENV/
-matrix_env_poetry/
 
 # --- Python bytecode ---
 __pycache__/
@@ -32,6 +31,13 @@ poetry.lock
 # --- Generated artifacts ---
 playground.py
 *.png
+
+# --- Secrets: real values never leave this machine ---
+.env
+.env.*
+# ...but the placeholder template IS committed, so peers know
+# which variables to set:
+!.env.example
 
 # --- Editor / OS ---
 .vscode/
