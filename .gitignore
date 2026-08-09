@@ -29,9 +29,8 @@ dist/
 poetry.lock
 
 # --- Generated artifacts ---
-matrix_analysis.png
 playground.py
-playground_*.png
+*.png
 
 # --- Editor / OS ---
 .vscode/
