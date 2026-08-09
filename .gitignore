@@ -8,6 +8,7 @@ venv/
 .venv/
 env/
 ENV/
+matrix_env_poetry/
 
 # --- Python bytecode ---
 __pycache__/
