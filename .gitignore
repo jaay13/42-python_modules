@@ -1,0 +1,46 @@
+# Applies to every module. Patterns without a leading slash match at any
+# depth, so "__pycache__/" covers module06/alchemy/__pycache__/ too.
+
+# --- Virtual environments ---
+matrix_env/
+test_env/
+venv/
+.venv/
+env/
+ENV/
+
+# --- Python bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Tooling caches ---
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+
+# --- Packaging / build output ---
+build/
+dist/
+*.egg-info/
+poetry.lock
+
+# --- Generated artifacts ---
+matrix_analysis.png
+playground.py
+playground_*.png
+
+# --- Editor / OS ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# --- Subject PDFs (reference material, not deliverables) ---
+*.pdf
+
+# --- text files ---
+*.txt
