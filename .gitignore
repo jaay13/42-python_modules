@@ -42,5 +42,8 @@ playground_*.png
 # --- Subject PDFs (reference material, not deliverables) ---
 *.pdf
 
-# --- text files ---
+# --- text files (exercise scratch output) ---
 *.txt
+
+# ...but these are graded deliverables, never ignore them:
+!requirements.txt
