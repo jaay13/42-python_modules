@@ -38,7 +38,7 @@ def main() -> None:
         crew_size=6,
         power_level=85.5,
         oxygen_level=92.3,
-        last_maintenance=dt.datetime.now().astimezone(),
+        last_maintenance=dt.datetime(2026, 8, 10, 11, 53) # Also allowed: "YYYY-MM-DD HH:MM:SS"
     )
 
     print("Valid station created:")
@@ -47,6 +47,7 @@ def main() -> None:
     print(f"Crew: {valid_space_station.crew_size} people")
     print(f"Power: {valid_space_station.power_level}%")
     print(f"Oxygen: {valid_space_station.oxygen_level}%")
+    print(f"Last Maintenance: {valid_space_station.last_maintenance}")
     if valid_space_station.is_operational:
         print("Status: Operational")
     else:
