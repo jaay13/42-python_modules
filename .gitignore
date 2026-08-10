@@ -32,6 +32,10 @@ poetry.lock
 playground.py
 *.png
 
+# --- Tooling shipped with a subject, not my own work ---
+data_generator/
+generated_data/
+
 # --- Secrets: real values never leave this machine ---
 .env
 .env.*
