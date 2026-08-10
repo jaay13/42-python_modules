@@ -38,7 +38,9 @@ def main() -> None:
         crew_size=6,
         power_level=85.5,
         oxygen_level=92.3,
-        last_maintenance=dt.datetime(2026, 8, 10, 11, 53) # Also allowed: "YYYY-MM-DD HH:MM:SS"
+        # An ISO string such as "2026-08-10 11:53" is accepted here
+        # too - Pydantic parses it into a datetime.
+        last_maintenance=dt.datetime(2026, 8, 10, 11, 53),
     )
 
     print("Valid station created:")
