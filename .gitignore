@@ -48,6 +48,7 @@ generated_data/
 .idea/
 *.swp
 .DS_Store
+.flake8
 
 # --- Subject PDFs (reference material, not deliverables) ---
 *.pdf
@@ -57,3 +58,6 @@ generated_data/
 
 # ...but these are graded deliverables, never ignore them:
 !requirements.txt
+
+# --- Test folders ---
+local-test/
