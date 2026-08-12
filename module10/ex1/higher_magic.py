@@ -12,7 +12,9 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
 
     Both spells receive the same arguments.
     """
-    raise NotImplementedError
+    def combined(target: str, power: int) -> tuple[str, str]:
+        return spell1(target, power), spell2(target, power)
+    return combined
 
 
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
@@ -20,7 +22,9 @@ def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
 
     The returned function keeps the original signature.
     """
-    raise NotImplementedError
+    def amplified(target: str, power: int) -> str:
+        return base_spell(target, multiplier * power)
+    return amplified
 
 
 def conditional_caster(condition: Callable, spell: Callable) -> Callable:
