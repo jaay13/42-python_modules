@@ -33,7 +33,11 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     Condition and spell receive the same arguments; a failed
     condition returns "Spell fizzled".
     """
-    raise NotImplementedError
+    def cast(target: str, power: int) -> str:
+        if condition(target, power):
+            return spell(target, power)
+        return "Spell fizzled"
+    return cast
 
 
 def spell_sequence(spells: list[Callable]) -> Callable:
@@ -42,7 +46,13 @@ def spell_sequence(spells: list[Callable]) -> Callable:
     Each spell receives the same arguments; returns a list of all
     results.
     """
-    raise NotImplementedError
+    def sequence(target: str, power: int) -> list[str]:
+        res = []
+        for spell in spells:
+            res.append(spell(target, power))
+        return res
+    return sequence
+
 
 
 def main() -> None:
