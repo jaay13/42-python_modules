@@ -85,7 +85,8 @@ def security_check() -> None:
 
     print("[OK] No hardcoded secrets detected")
 
-    if os.path.isfile(".env"):
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    if os.path.isfile(env_path):
         print("[OK] .env file properly configured")
     else:
         print("[!] .env not found - copy .env.example to .env")
