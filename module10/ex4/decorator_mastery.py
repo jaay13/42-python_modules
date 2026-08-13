@@ -4,6 +4,7 @@ Every decorator uses functools.wraps so the wrapped function keeps
 its own name and docstring.
 """
 
+import inspect
 import time
 from collections.abc import Callable
 from functools import wraps
@@ -39,7 +40,8 @@ def power_validator(min_power: int) -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs):
-            power = args[-1]
+            bound = inspect.signature(func).bind(*args, **kwargs)
+            power = bound.arguments["power"]
             if power >= min_power:
                 return func(*args, **kwargs)
             return "Insufficient power for this spell"
@@ -70,6 +72,7 @@ def retry_spell(max_attempts: int) -> Callable:
         return wrapper
     return decorator
 
+
 class MageGuild:
     """A guild whose members cast validated spells."""
 
@@ -92,7 +95,38 @@ class MageGuild:
 
 def main() -> None:
     """Demonstrate each decorator and the guild's static method."""
-    raise NotImplementedError
+
+    print("Testing spell timer...")
+
+    @spell_timer
+    def jump_boost() -> str:
+        time.sleep(0.21)
+        return "You now have jump boost II for 5 min!"
+
+    print(f"Result: {jump_boost()}")
+
+    print("\nTesting retrying spell")
+
+    @retry_spell(3)
+    def failing() -> str:
+        raise RuntimeError("fizzled")
+
+    print(failing())
+
+    @retry_spell(3)
+    def succeeding() -> str:
+        return "You now have speed II for 3 min!"
+
+    print(succeeding())
+
+    print("\nTesting MageGuild...")
+    print(MageGuild.validate_mage_name("Jason"))
+    print(MageGuild.validate_mage_name("J4s0n"))
+    guild = MageGuild()
+    valid = guild.cast_spell("Lightning", 15)
+    invalid = guild.cast_spell("Lightning", 8)
+    print(valid)
+    print(invalid)
 
 
 if __name__ == "__main__":
