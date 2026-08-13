@@ -13,7 +13,19 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     module where one fits. Returns 0 for an empty list, and handles
     an unknown operation rather than failing silently.
     """
-    raise NotImplementedError
+
+    if not spells:
+        return 0
+    if operation == "add":
+        return reduce(add, spells)
+    elif operation == "multiply":
+        return reduce(mul, spells)
+    elif operation == "max":
+        return reduce(max, spells)
+    elif operation == "min":
+        return reduce(min, spells)
+    else:
+        raise ValueError("Wrong operation provided")
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
@@ -23,7 +35,17 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
     (power: int, element: str, target: str) -> str; each version
     pre-fills power=50 and one element.
     """
-    raise NotImplementedError
+    sharpess_enchant = partial(base_enchantment, 50, "Sharpness")
+    smite_enchant = partial(base_enchantment, 50, "Smite")
+    bane_of_arthropods_enchant = partial(
+        base_enchantment, 50, "Bane_of_arthropods"
+    )
+
+    return {
+        "sharpness": sharpess_enchant,
+        "smite": smite_enchant,
+        "bane_of_arthropods": bane_of_arthropods_enchant
+    }
 
 
 def memoized_fibonacci(n: int) -> int:
