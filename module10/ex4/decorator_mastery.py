@@ -54,8 +54,21 @@ def retry_spell(max_attempts: int) -> Callable:
     retry and returns "Spell casting failed after <n> attempts" if
     every attempt fails.
     """
-    raise NotImplementedError
-
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception:
+                    if attempt < max_attempts:
+                        print(
+                            f"Spell failed, retrying... "
+                            f"(attempt {attempt}/{max_attempts})"
+                        )
+            return f"Spell casting failed after {max_attempts} attempts"
+        return wrapper
+    return decorator
 
 class MageGuild:
     """A guild whose members cast validated spells."""
@@ -63,16 +76,18 @@ class MageGuild:
     @staticmethod
     def validate_mage_name(name: str) -> bool:
         """True if name is 3+ characters of letters and spaces only."""
-        raise NotImplementedError
+        return (
+            all(c.isalpha() or c == " " for c in name) and len(name) >= 3
+        )
 
-    # Decorate with @power_validator(min_power=10) once it exists.
+    @power_validator(min_power=10)
     def cast_spell(self, spell_name: str, power: int) -> str:
         """Cast a spell, returning what happened.
 
         On success: "Successfully cast <spell_name> with <power>
         power".
         """
-        raise NotImplementedError
+        return f"Successfully cast {spell_name} with {power} power"
 
 
 def main() -> None:
