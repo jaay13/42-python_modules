@@ -57,7 +57,10 @@ def memoized_fibonacci(n: int) -> int:
     same n are served from cache instead of recomputed, turning the
     naive exponential-time recursion into linear time.
 
-    Caching is observable through memoized_fibonacci.cache_info().
+    Caching is observable through memoized_fibonacci.cache_info():
+    "misses" count calls whose n was computed for the first time,
+    "hits" count calls whose n was already cached and returned
+    instantly instead of recursing further.
     """
     if n < 2:
         return n
@@ -96,7 +99,41 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
 def main() -> None:
     """Demonstrate each functools artifact."""
-    raise NotImplementedError
+
+    print("Testing spell reducer...")
+
+    spells = [16, 32, 64, 128]
+    print(f"Sum: {spell_reducer(spells, "add")}")
+    print(f"Product: {spell_reducer(spells, "multiply")}")
+    print(f"Max: {spell_reducer(spells, "max")}")
+    print(f"Min: {spell_reducer(spells, "min")}")
+
+    print("\nTesting partial enchanter...")
+
+    def base_enchantment(power: int, element: str, target: str) -> str:
+        return f"{element} enchantment +{power} power on {target}"
+    enchantments = partial_enchanter(base_enchantment)
+    print(enchantments["sharpness"]("Netherite Sword"))
+    print(enchantments["smite"]("Diamond Sword"))
+    print(enchantments["bane_of_arthropods"]("Iron Sword"))
+
+    print("\nTesting memoized fibonacci...")
+
+    print(f"Fib(0): {memoized_fibonacci(0)}")
+    print(f"Fib(1): {memoized_fibonacci(1)}")
+    print(f"Fib(10): {memoized_fibonacci(10)}")
+    print(f"Fib(15): {memoized_fibonacci(15)}")
+    print(f"Fib(15): {memoized_fibonacci(15)}")
+    print(f"Fib(15): {memoized_fibonacci(15)}")
+    print(memoized_fibonacci.cache_info())
+
+    print("\nTesting spell dispatcher...")
+
+    dispatcher = spell_dispatcher()
+    print(dispatcher(42))
+    print(dispatcher("Loyalty III"))
+    print(dispatcher(["fire", "ice", "earth", "air"]))
+    print(dispatcher({"unknown": 10}))
 
 
 if __name__ == "__main__":
