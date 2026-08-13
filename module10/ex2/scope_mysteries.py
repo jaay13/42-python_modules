@@ -12,6 +12,7 @@ function.
 """
 
 from collections.abc import Callable
+from typing import Any
 
 
 def mage_counter() -> Callable:
@@ -68,12 +69,12 @@ def memory_vault() -> dict[str, Callable]:
     """
     storage = {}
 
-    def store(key: str, value: object) -> None:
+    def store(key: str, value: Any) -> None:
         # No nonlocal: mutates the dict storage points to,
         # doesn't rebind the name storage itself.
         storage[key] = value
 
-    def recall(key: str) -> object:
+    def recall(key: str) -> Any:
         return storage.get(key, "Memory not found")
 
     return {"store": store, "recall": recall}
