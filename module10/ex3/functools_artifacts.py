@@ -1,6 +1,8 @@
 """Ancient Library: reduce, partial, lru_cache and singledispatch."""
 
 from collections.abc import Callable
+from functools import lru_cache, partial, reduce, singledispatch
+from operator import add, mul
 from typing import Any
 
 
