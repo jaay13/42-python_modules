@@ -48,21 +48,50 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
     }
 
 
+@lru_cache
 def memoized_fibonacci(n: int) -> int:
     """Return the nth Fibonacci number, cached with lru_cache.
 
+    lru_cache memoizes each (n -> result) pair the first time it's
+    computed, so repeated or overlapping recursive calls with the
+    same n are served from cache instead of recomputed, turning the
+    naive exponential-time recursion into linear time.
+
     Caching is observable through memoized_fibonacci.cache_info().
     """
-    raise NotImplementedError
+    if n < 2:
+        return n
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
     """Return a functools.singledispatch spell caster.
 
-    The base implementation handles unknown types; int casts damage,
-    str enchants, and list multi-casts.
+    singledispatch turns one function into a type-based switch: the
+    @singledispatch-decorated function 'fallback' is the fallback for any type
+    with no registered handler, and each @fallback.register(SomeType)
+    adds a handler that fires instead whenever the first argument's
+    runtime type matches SomeType. The fallback implementation handles
+    unknown types; int casts damage, str enchants, and list
+    multi-casts.
     """
-    raise NotImplementedError
+    @singledispatch
+    def fallback(spell: Any) -> str:
+        return "Unknown spell type"
+
+    @fallback.register(int)
+    def integers(n: int) -> str:
+        return f"Damage spell: {n} damage"
+
+    @fallback.register(str)
+    def strings(spell: str) -> str:
+        return f"Enchantment: {spell}"
+
+    @fallback.register(list)
+    def lists(spell: list) -> str:
+        return f"Multi-cast: {len(spell)} spells"
+
+    return fallback
 
 
 def main() -> None:
