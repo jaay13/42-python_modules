@@ -4,7 +4,9 @@ Every decorator uses functools.wraps so the wrapped function keeps
 its own name and docstring.
 """
 
+import time
 from collections.abc import Callable
+from functools import wraps
 
 
 def spell_timer(func: Callable) -> Callable:
@@ -14,7 +16,18 @@ def spell_timer(func: Callable) -> Callable:
     "Spell completed in X.XXX seconds" after, then returns the
     original result.
     """
-    raise NotImplementedError
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Casting {func.__name__}...")
+        start = time.perf_counter()
+        ret = func(*args, **kwargs)
+        end = time.perf_counter()
+        elapsed = end - start
+        print(f"Spell completed in {elapsed:.3f} seconds")
+
+        return ret
+
+    return wrapper
 
 
 def power_validator(min_power: int) -> Callable:
@@ -23,7 +36,15 @@ def power_validator(min_power: int) -> Callable:
     A valid power runs the function normally; otherwise the wrapper
     returns "Insufficient power for this spell".
     """
-    raise NotImplementedError
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            power = args[-1]
+            if power >= min_power:
+                return func(*args, **kwargs)
+            return "Insufficient power for this spell"
+        return wrapper
+    return decorator
 
 
 def retry_spell(max_attempts: int) -> Callable:
