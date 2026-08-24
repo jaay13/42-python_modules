@@ -34,6 +34,7 @@ playground.py
 
 # --- Tooling shipped with a subject, not my own work ---
 data_generator/
+data_generator.py
 generated_data/
 
 # --- Secrets: real values never leave this machine ---

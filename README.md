@@ -1,10 +1,80 @@
-# Python_Modules (WIP)
+# 42 Python Modules
 
-A progression of Python exercises, one theme per module, going from
-basic syntax to decorators and functional tools. Each module lives in
-its own directory; most exercises are individually runnable scripts
-with their own docstrings and inline comments explaining the "why",
-not just the "what".
+Eleven modules of Python coursework from the [42 Berlin](https://42berlin.de)
+curriculum, going from basic syntax to design patterns, dependency
+management and functional programming. Each module is a themed set of
+exercises — a garden, an alchemist's workshop, a creature tournament,
+the Matrix — that carries one topic from its simplest form to something
+you would actually ship.
+
+Most exercises are individually runnable scripts whose docstrings and
+comments explain the *why*, not just the *what*.
+
+> Published after completing the modules. If you are currently working
+> through these yourself: 42 defences require explaining your own code
+> line by line, so reading someone else's solution will not get you
+> through one.
+
+## Worth reading
+
+If you only open a few files, these are the ones where the exercise
+stopped being a drill:
+
+- **[`module05/ex2/data_pipeline.py`](module05/ex2/data_pipeline.py)** —
+  export plugins defined as a `Protocol` rather than an ABC. `CSVPlugin`
+  and `JSONPlugin` satisfy it purely by defining a matching method, with
+  no shared base class and no registration. Adding a format never touches
+  `DataStream`.
+- **[`module06/alchemy/`](module06/alchemy)** — a real package with
+  subpackages and validators. The `__init__.py` files document *why* each
+  import style was chosen, not just which one works.
+- **[`module07/ex2/`](module07/ex2)** — battle behaviour pulled out into
+  strategy objects, so a creature's actions no longer depend on its type.
+  [`ex0`](module07/ex0) does the same for construction with an abstract
+  factory.
+- **[`module09/ex1/alien_contact.py`](module09/ex1/alien_contact.py)** —
+  where field-level constraints stop being enough. Rules like "telepathic
+  contact needs three witnesses" span two fields, so they live in a
+  `@model_validator`.
+- **[`module10/ex4/decorator_mastery.py`](module10/ex4/decorator_mastery.py)**
+  — decorators that time and enhance any function, each using
+  `functools.wraps` so the wrapped function keeps its own identity.
+
+## Running the exercises
+
+Every exercise is a standalone script, run from the repository root:
+
+```bash
+python3 module00/ex0/ft_hello_garden.py
+python3 module03/ex5/ft_data_stream.py
+python3 module07/battle.py
+```
+
+The package imports in `module06` and `module07` resolve without any
+path setup, because Python puts a script's own directory on `sys.path`.
+
+Some modules need third-party packages:
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r module08/ex1/requirements.txt   # pandas, matplotlib
+pip install -r module08/ex2/requirements.txt   # python-dotenv
+pip install pydantic                           # module09
+```
+
+For `module08/ex2`, copy the template before running:
+
+```bash
+cp module08/ex2/.env.example module08/ex2/.env
+```
+
+## Conventions
+
+- All 86 tracked source files are **flake8-clean at 79 columns**.
+- Type hints throughout, including `Protocol` and generics where the
+  design calls for them.
+- Docstrings explain the reasoning behind a design choice rather than
+  restating the code.
 
 ## Table of Contents
 
@@ -176,3 +246,10 @@ timed, retryable spells.
 | ex2 | `scope_mysteries.py` | Closures and `nonlocal` |
 | ex3 | `functools_artifacts.py` | `functools` (`reduce`, `partial`, `lru_cache`, etc.) |
 | ex4 | `decorator_mastery.py` | Decorators (`functools.wraps`, parameterized decorators) |
+
+## Not in this repository
+
+Subject PDFs, generated datasets and the data-generator helpers shipped
+with the exercises are excluded — they are not my work to redistribute.
+Real `.env` values never leave my machine; only the
+[`.env.example`](module08/ex2/.env.example) template is committed.
